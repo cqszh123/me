@@ -1,0 +1,186 @@
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes" />
+    <style>
+			body {
+				margin: 0;
+				padding: 0;
+				background: #eff2f5;
+			}
+			.header {
+				height: 45px;
+				font-size: 18px;
+				text-align: center;
+				line-height: 45px;
+				color: #fff;
+				background: rgb(244, 83, 83);
+				font-weight: 500;
+				font-family: cursive;
+			}
+			.formCls {
+				margin: 15px;
+				background: #fff;
+				padding-bottom: 100px;
+			}
+			.cellCls {
+				height: 24px;
+				padding: 10px;
+				display: flex;
+				line-height: 24px;
+				font-size: 16px;
+				font-family: cursive;
+				border-bottom: 1px solid #eff2f5;
+				justify-content: space-between;
+			}
+			.lt {
+				width: 30%;
+				line-height: 24px;
+			}
+			.lr {
+				width: 70%;
+				line-height: 24px;
+			}
+			input, select{
+				height: 24px;
+				width: 100%;
+				border: none;
+			}
+			.flooter {
+				position: fixed;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				height: 100px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				line-height: 100px;
+				background: #fff;
+			}
+			.btn { 
+				height: 45px;
+				width: 80%;
+				cursor: pointer;
+				line-height: 45px;
+				color: #fff;
+				font-size: 16px;
+				border-radius: 5px;
+				font-family: cursive;
+				text-align: center;
+				background: rgb(244, 83, 83);
+			}
+	</style>
+</head>
+<body>
+		<div class="header">家族成员统计表</div>
+		<div class="formCls">
+			<form name="myform">
+				<div class="cellCls">
+					<div class="lt">姓名：</div>
+					<div class="lr">
+						<input name="nameID" type="text" placeholder="请输入姓名" />
+					</div>
+				</div>
+				<div class="cellCls">
+					<div class="lt">性别：</div>
+					<div class="lr">
+						<select name="sexID" placeholder="请选择性别">
+							<option value="男">男</option>
+							<option value="女">女</option>
+						</select>
+					</div>
+				</div>
+				<div class="cellCls">
+					<div class="lt">出生日期：</div>
+					<div class="lr">
+						<input name="dateID" type="text" placeholder="例如：2022-12-23" />
+					</div>
+				</div>
+				<div class="cellCls">
+					<div class="lt">学历：</div>
+					<div class="lr">
+						<select name="academicID" placeholder="请选择学历">
+							<option value="小学">小学</option>
+							<option value="初中">初中</option>
+							<option value="高中">高中</option>
+							<option value="高职">高职</option>
+							<option value="大专">大专</option>
+							<option value="本科">本科</option>
+							<option value="研究生">研究生</option>
+						</select>
+					</div>
+				</div>
+				<div class="cellCls">
+					<div class="lt">职务：</div>
+					<div class="lr">
+						<input name="positionID" type="text" placeholder="请输入职务" />
+					</div>
+				</div>
+				<div class="cellCls">
+					<div class="lt">单位地址：</div>
+					<div class="lr">
+						<input name="unitAddressID" type="text" placeholder="请输入单位地址" />
+					</div>
+				</div>
+				<div class="cellCls">
+					<div class="lt">现居住地：</div>
+					<div class="lr">
+						<input name="livingID" type="text" placeholder="请输入现居住地" />
+					</div>
+				</div>
+				<div class="cellCls">
+					<div class="lt">现籍贯：</div>
+					<div class="lr">
+						<input name="currentPlaceId" type="text" placeholder="请输入现籍贯" />
+					</div>
+				</div>
+				<div class="cellCls">
+					<div class="lt">配偶：</div>
+					<div class="lr">
+						<input name="spouseID" type="text" placeholder="请输入配偶姓名" />
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="flooter">
+			<div class="btn" onclick="submit()">提交</div>
+		</div>
+    <script>
+			function tableExcel(name, labelList, dataList) {
+				// 列标题，逗号隔开，每一个逗号就是隔开一个单元格
+				let str = `${labelList.join(',')}\n`;
+				// 增加\t为了不让表格显示科学计数法或者其他格式
+				for(let i = 0 ; i < dataList.length ; i++ ){
+					for(const key in dataList[i]){
+						str+=`${dataList[i][key] + '\t'},`;     
+					}
+					str+='\n';
+				}
+				// encodeURIComponent解决中文乱码
+				const uri = 'data:text/csv;charset=utf-8,\ufeff' + encodeURIComponent(str);
+				// 通过创建a标签实现
+				const link = document.createElement("a");
+				link.href = uri;
+				// 对下载的文件命名
+				link.download =  `${name}.csv`;
+				link.click();
+			}
+			function submit() {
+				var arr = [];
+				var domList = document.querySelectorAll('.lt')
+				domList.forEach((dom)=> arr.push(dom.innerText) )
+				tableExcel('人物数据', arr, [{
+					name: myform.nameID.value,
+					sex: myform.sexID.value,
+					date: myform.dateID.value,
+					academic: myform.academicID.value,
+					position: myform.positionID.value,
+					unitAddress: myform.unitAddressID.value,
+					living: myform.livingID.value,
+					currentPlace: myform.currentPlaceId.value,
+					spouse: myform.spouseID.value,
+				}])
+			}
+    </script>
+</body>
+</html>
