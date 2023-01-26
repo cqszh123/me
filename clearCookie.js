@@ -8,7 +8,7 @@ function clearCookie() {
             document.cookie = keys[i] + '=0;path=/;domain=kevis.com;expires=' + new Date(0).toUTCString();
         }
     }
-    console.log('已清除');
+    console.log('已清除');  
 }
 
 function closePage(pageUrl) {
@@ -21,7 +21,7 @@ function closePage(pageUrl) {
       if (newWindow) {
         newWindow.close(); 
       }
-    }, 3000);
+    }, 3000); 
 }
 
 function controllerFun(ulr, userNum, time) {
@@ -36,4 +36,4 @@ function controllerFun(ulr, userNum, time) {
     }, time);
 }
 
-controllerFun('https://zhaopeng.me/', 10, 5000);
+controllerFun('https://cqszh123.github.io/me/renumberMe.html?_source=YM', 10, 5000);
